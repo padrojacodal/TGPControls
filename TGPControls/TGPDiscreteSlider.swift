@@ -229,6 +229,7 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
     var ticksAbscissae:[CGPoint] = []
     var thumbAbscissa:CGFloat = 0
     var thumbLayer = CALayer()
+    var thumbTextLayer = CATextLayer()
 
     var trackLayer = CALayer()
     var leftTrackLayer = CALayer()
@@ -497,6 +498,18 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
                 thumbLayer.borderWidth = 0.0
                 thumbLayer.cornerRadius = 0.0
                 thumbLayer.allowsEdgeAntialiasing = false
+                
+                //Custom requirements addition
+                thumbTextLayer.foregroundColor = UIColor.white.cgColor
+                thumbTextLayer.frame = thumbLayer.bounds
+                thumbLayer.addSublayer(thumbTextLayer)
+                thumbTextLayer.alignmentMode = "center"
+                let thumbTextAttributes: [NSAttributedStringKey: Any] = [
+                    NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: 13.0)! , // font
+                    NSAttributedStringKey.foregroundColor: UIColor.white,
+                    NSAttributedStringKey.baselineOffset: -3.0]
+                let thumbAttributedString = NSAttributedString(string: "\(Int(value))", attributes: thumbTextAttributes )
+                thumbTextLayer.string = "\(thumbAttributedString)"
 
             case .rectangular:
                 thumbLayer.backgroundColor = (thumbTintColor ?? UIColor.lightGray).cgColor
@@ -514,7 +527,7 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
 
             default:
                 thumbLayer.backgroundColor = (thumbTintColor ?? UIColor.white).cgColor
-
+                
                 // Only default iOS thumb has a border
                 if nil == thumbTintColor {
                     let borderColor = UIColor(white:0.5, alpha: 1)
