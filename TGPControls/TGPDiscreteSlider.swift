@@ -501,15 +501,11 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
                 
                 //Custom requirements addition
                 thumbTextLayer.foregroundColor = UIColor.white.cgColor
+                thumbTextLayer.fontSize = 15.0
                 thumbTextLayer.frame = thumbLayer.bounds
-                thumbLayer.addSublayer(thumbTextLayer)
                 thumbTextLayer.alignmentMode = "center"
-                let thumbTextAttributes: [NSAttributedStringKey: Any] = [
-                    NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: 13.0)! , // font
-                    NSAttributedStringKey.foregroundColor: UIColor.white,
-                    NSAttributedStringKey.baselineOffset: -3.0]
-                let thumbAttributedString = NSAttributedString(string: "\(Int(value))", attributes: thumbTextAttributes )
-                thumbTextLayer.string = "\(thumbAttributedString)"
+                thumbTextLayer.string = "\(Int(value))"
+                thumbLayer.addSublayer(thumbTextLayer)
 
             case .rectangular:
                 thumbLayer.backgroundColor = (thumbTintColor ?? UIColor.lightGray).cgColor
