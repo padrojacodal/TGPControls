@@ -330,19 +330,30 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
             fallthrough
 
         case .image:
-            for originPoint in ticksAbscissae {
-                let rectangle = CGRect(x: originPoint.x-(tickSize.width/2),
+            for (index, originPoint) in ticksAbscissae.enumerated() {
+                var rectangle = CGRect(x: originPoint.x-(tickSize.width/2),
                                        y: originPoint.y-(tickSize.height/2),
                                        width: tickSize.width,
                                        height: tickSize.height)
+                if index == 0 || index == ticksAbscissae.count - 1 {
+                    rectangle = CGRect(x: originPoint.x-((tickSize.width - (tickSize.width/2)/2)),
+                                       y: originPoint.y-((tickSize.height * 2)/2),
+                                       width: tickSize.width - (tickSize.width/2),
+                                       height: tickSize.height * 2)
+                } else {
+                    rectangle = CGRect(x: originPoint.x-(tickSize.width/2),
+                                       y: originPoint.y-(tickSize.height/2),
+                                       width: tickSize.width,
+                                       height: tickSize.height)
+                }
                 switch tickComponentStyle {
                 case .rounded:
                     path.append(UIBezierPath(roundedRect: rectangle,
                                              cornerRadius: rectangle.height/2))
-
+                    
                 case .rectangular:
                     path.append(UIBezierPath(rect: rectangle))
-
+                    
                 case .image:
                     // Draw image if exists
                     if let image = tickImage,
@@ -354,17 +365,18 @@ public class TGPDiscreteSlider:TGPSlider_INTERFACE_BUILDER {
                                               height: image.size.height)
                         ctx.draw(cgImage, in: centered)
                     }
-
+                    
                 case .invisible:
                     fallthrough
-
+                    
                 case .iOS:
                     fallthrough
-
+                    
                 default:
                     assert(false)
                     break
                 }
+                
             }
 
         case .invisible:
